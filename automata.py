@@ -27,7 +27,7 @@ def buscar(s,ptr):
 		if(s == ptr[i][0]):
 			return ptr[i][1]
 
-def celular(ini,patron):
+def un_celular(ini,patron):
 	temp = []
 	l= len(ini)
 	s = str(ini[-1]) + str(ini[0]) + str(ini[1])
@@ -50,10 +50,11 @@ def celular(ini,patron):
 	mostrar(temp)
 	return temp
 
-mostrar(prueba)
-aux = celular(prueba,patron30)
-for i in range(20):
-	aux = celular(aux,patron30)
+def celular_n(n,patron):
+	mostrar(prueba)
+	aux = un_celular(prueba,patron)
+	for i in range(n):
+		aux = un_celular(aux,patron)
 
 
-
+celular_n(21,patron30)
