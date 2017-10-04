@@ -41,7 +41,7 @@ def celular(ini,patron):
 		else:
 			s = str(ini[i]) + str(ini[i+1]) + str(ini[i+2])
 		i=i+1
-		if(i==40):
+		if(i==l):
 			i=0
 		temp.append(buscar(s,patron))
 		#a = s + " -> " + str(buscar(s,patron30))
