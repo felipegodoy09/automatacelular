@@ -1,3 +1,5 @@
+from tkinter import *
+
 inicial = [0,0,1,1,0,1,1,0,1,0,1,1,1,0,0,1,1,1,0,1,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,1,1,1,0]
 prueba =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 patron110 = [	['000',0],
@@ -17,6 +19,7 @@ patron30 = 	[	['000',0],
 				['101',0],
 				['110',0],
 				['111',0]]
+
 def mostrar(lista):
 	for i in lista:
 		print(i,end="")
@@ -26,6 +29,20 @@ def buscar(s,ptr):
 	for i in range(len(ptr)):
 		if(s == ptr[i][0]):
 			return ptr[i][1]
+
+def lista_to_string(lista):
+	temp = ""
+	for i in lista:
+		temp = temp + str(i)
+	return temp
+
+def dibujar_matriz(n,m,matriz,tam=10):
+	for i in range(n):
+		for j in range(m):
+			if(matriz[j][i]== 0):
+				cuadrado = areaDibujo.create_rectangle((2+i*tam),(2+j*tam),(tam+2+i*tam),(tam+2+j*tam),fill = "white")
+			elif(matriz[j][i]==1):
+				cuadrado = areaDibujo.create_rectangle((2+i*tam),(2+j*tam),(tam+2+i*tam),(tam+2+j*tam),fill = "black")
 
 def un_celular(ini,patron):
 	temp = []
@@ -47,14 +64,28 @@ def un_celular(ini,patron):
 		#a = s + " -> " + str(buscar(s,patron30))
 		
 		#print(a)
-	mostrar(temp)
+	#mostrar(temp)
 	return temp
 
-def celular_n(n,patron):
-	mostrar(prueba)
-	aux = un_celular(prueba,patron)
+def celular_n(ini,n,patron):
+	matriz = []
+	matriz.append(ini)
+	#mostrar(prueba)
+	aux = un_celular(ini,patron)
+	matriz.append(aux)
 	for i in range(n):
 		aux = un_celular(aux,patron)
+		matriz.append(aux)
+	return matriz
 
 
-celular_n(21,patron30)
+m = celular_n(prueba,21,patron30)
+n = len(prueba)
+k = len(m)
+ventana = Tk()											#constructor,se inicia script de interfaz grafica
+areaDibujo = Canvas(ventana,width=800,height=800)		#constructor, se inicia area de dibujo
+ventana.geometry("800x800")								#tamaño de la ventana
+areaDibujo.place(x=10,y=10)								#se posiciona area de dibujo
+ventana.title("Automata Celular")						#titulo de ventana
+dibujar_matriz(n,k,m)									#ejecuta funcion de dibujo
+ventana.mainloop()										#finaliza e inicia la interfaz
