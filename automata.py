@@ -1,4 +1,6 @@
 from tkinter import *
+from time import time
+import decimal
 
 inicial = [0,0,1,1,0,1,1,0,1,0,1,1,1,0,0,1,1,1,0,1,0,1,0,0,0,1,0,0,1,1,1,0,0,0,1,1,1,1,1,0]
 prueba =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -36,13 +38,22 @@ def lista_to_string(lista):
 		temp = temp + str(i)
 	return temp
 
+
 def dibujar_matriz(n,m,matriz,tam=10):
+	tam = 800/n
+	ini=5
 	for i in range(n):
 		for j in range(m):
 			if(matriz[j][i]== 0):
-				cuadrado = areaDibujo.create_rectangle((2+i*tam),(2+j*tam),(tam+2+i*tam),(tam+2+j*tam),fill = "white")
+				cuadrado = areaDibujo.create_rectangle((ini+i*tam),(ini+j*tam),(tam+ini+i*tam),(tam+ini+j*tam),fill = "white")
 			elif(matriz[j][i]==1):
-				cuadrado = areaDibujo.create_rectangle((2+i*tam),(2+j*tam),(tam+2+i*tam),(tam+2+j*tam),fill = "black")
+				cuadrado = areaDibujo.create_rectangle((ini+i*tam),(ini+j*tam),(tam+ini+i*tam),(tam+ini+j*tam),fill = "black")
+	ti = Label(ventana, text = "Tiempo de ejecucion: " + ).place(x=10,y=750)
+def semilla_default():
+	temp = lista_to_string(prueba)
+	text.set(temp)
+def generacion_default():
+	gen.set(21)
 
 def un_celular(ini,patron):
 	temp = []
@@ -78,14 +89,46 @@ def celular_n(ini,n,patron):
 		matriz.append(aux)
 	return matriz
 
+def dibujar():
+	tini= time()
+	s = []
+	ptr = []
+	for i in text.get():
+		s.append(int(i))
+	if(opcion.get() == 1):
+		for i in patron30:
+			ptr.append(i)
+	elif(opcion.get()==2):
+		for i in patron110:
+			ptr.append(i)
+	m = celular_n(s,gen.get(),ptr)
+	dibujar_matriz(len(s),len(m),m)
+	tfin= time()
+	tiempo=tfin-tini
+	print(tiempo)
 
-m = celular_n(prueba,21,patron30)
-n = len(prueba)
-k = len(m)
 ventana = Tk()											#constructor,se inicia script de interfaz grafica
-areaDibujo = Canvas(ventana,width=800,height=800)		#constructor, se inicia area de dibujo
-ventana.geometry("800x800")								#tamaño de la ventana
-areaDibujo.place(x=10,y=10)								#se posiciona area de dibujo
+tiempo=0
+gen = IntVar()
+text = StringVar()
+semilla_default()
+generacion_default()
+opcion = IntVar()
+opcion.set(1)
+areaDibujo = Canvas(ventana,width=800,height=600)		#constructor, se inicia area de dibujo
+rec = areaDibujo.create_rectangle(5,5,799,599)
+ventana.geometry("1200x800")								#tamaño de la ventana
+areaDibujo.place(x=200,y=50)								#se posiciona area de dibujo
 ventana.title("Automata Celular")						#titulo de ventana
-dibujar_matriz(n,k,m)									#ejecuta funcion de dibujo
+titulo = Label(ventana, text = "AUTOMATA CELULAR", font= "Verdana 20" ).pack()
+pat = Label(ventana, text = "Seleccione patron: ").place(x=10,y=650)
+pat30 = Radiobutton(ventana,text = "Patron 30",value=1,variable=opcion).place(x=10,y=680)
+pat110 = Radiobutton(ventana,text = "Patron 110",value =2,variable=opcion).place(x=10,y=700)
+semi = Label(ventana, text = "Ingrese semilla: ").place(x=180,y=650)
+sem = Entry(ventana, textvariable = text,width=60).place(x=180,y=680)
+default = Button(ventana, text = "Por Defecto", command = semilla_default).place(x=180,y=710)
+iterr = Label(ventana,text="Ingrese numero de generaciones: ").place(x=600,y=650)
+generacion = Entry(ventana, textvariable = gen,width=10).place(x=600,y=680)
+defecto = Button(ventana, text = "Por defecto", command = generacion_default).place(x=600,y=710)
+generar = Button(ventana, text = "RUN", command = dibujar ,width=30,height=5).place(x=900,y=650)
 ventana.mainloop()										#finaliza e inicia la interfaz
