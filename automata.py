@@ -39,16 +39,16 @@ def lista_to_string(lista):
 	return temp
 
 
-def dibujar_matriz(n,m,matriz,tam=10):
-	tam = 800/n
-	ini=5
+def dibujar_matriz(n,m,matriz,tam=10,inix=5,iniy=5):
+	tam=800/n
 	for i in range(n):
 		for j in range(m):
 			if(matriz[j][i]== 0):
-				cuadrado = areaDibujo.create_rectangle((ini+i*tam),(ini+j*tam),(tam+ini+i*tam),(tam+ini+j*tam),fill = "white")
+				cuadrado = areaDibujo.create_rectangle((inix+i*tam),(iniy+j*tam),(tam+inix+i*tam),(tam+iniy+j*tam),fill = "white")
 			elif(matriz[j][i]==1):
-				cuadrado = areaDibujo.create_rectangle((ini+i*tam),(ini+j*tam),(tam+ini+i*tam),(tam+ini+j*tam),fill = "black")
-	ti = Label(ventana, text = "Tiempo de ejecucion: " + ).place(x=10,y=750)
+				cuadrado = areaDibujo.create_rectangle((inix+i*tam),(iniy+j*tam),(tam+inix+i*tam),(tam+iniy+j*tam),fill = "black")
+	ti = Label(ventana, text = "Tiempo de ejecucion " + tem.get() + " segundos").place(x=10,y=750)
+
 def semilla_default():
 	temp = lista_to_string(prueba)
 	text.set(temp)
@@ -90,6 +90,7 @@ def celular_n(ini,n,patron):
 	return matriz
 
 def dibujar():
+	rec = areaDibujo.create_rectangle(5,5,799,599,fill="White")
 	tini= time()
 	s = []
 	ptr = []
@@ -105,10 +106,12 @@ def dibujar():
 	dibujar_matriz(len(s),len(m),m)
 	tfin= time()
 	tiempo=tfin-tini
-	print(tiempo)
+	a = "%8.6f" % tiempo
+	tem.set(a)
 
 ventana = Tk()											#constructor,se inicia script de interfaz grafica
 tiempo=0
+tem = StringVar()
 gen = IntVar()
 text = StringVar()
 semilla_default()
