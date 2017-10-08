@@ -82,12 +82,21 @@ def celular_n(ini,n,patron):
 	matriz = []
 	matriz.append(ini)
 	#mostrar(prueba)
+
+	if(n == 1):
+		return matriz
+
 	aux = un_celular(ini,patron)
 	matriz.append(aux)
-	for i in range(n):
-		aux = un_celular(aux,patron)
-		matriz.append(aux)
-	return matriz
+
+	if(n == 2):
+		return matriz
+
+	else:
+		for i in range(n-2):
+			aux = un_celular(aux,patron)
+			matriz.append(aux)
+		return matriz
 
 def dibujar():
 	rec = areaDibujo.create_rectangle(5,5,799,599,fill="White")
